@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}Take Quiz - {{ assessment.assessment_type }} for Course {{ course_id }} - KodeFun{% endblock %}
+{% block content %}
+<h2>Quiz: {{ assessment.assessment_type }} ({{assessment.weight_percentage}}%)</h2>
+<p>Course ID: {{ course_id }} | Assessment ID: {{ assessment.assessment_id }} | Attempt ID: {{ attempt_id }}</p>
+<hr>
+
+{% if questions %}
+    <form method="POST" action="{{ url_for('submit_quiz', attempt_id=attempt_id) }}">
+        {% for question in questions %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Question {{ loop.index }}: {{ question.question_text }}</h5>
+            </div>
+            <div class="card-body">
+                {% if question.choices %}
+                    {% for choice in question.choices %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" 
+                               name="question_{{ question.question_id }}" 
+                               id="choice_{{ choice.choice_id }}" 
+                               value="{{ choice.choice_id }}" required>
+                        <label class="form-check-label" for="choice_{{ choice.choice_id }}">
+                            {{ choice.choice_text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No choices available for this question.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success btn-lg">Submit Quiz</button>
+    </form>
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        There are no questions for this quiz at the moment. Please check back later or contact an administrator.
+    </div>
+    <a href="{{ url_for('course_detail', course_id=course_id) }}" class="btn btn-secondary">Back to Course</a>
+{% endif %}
+
+{% endblock %}

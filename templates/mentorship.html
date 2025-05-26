@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Mentorship Program - KodeFun{% endblock %}
+{% block content %}
+<h2>KodeFun Mentorship Program</h2>
+<p class="lead">Connect with experienced developers and accelerate your learning journey!</p>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <h4>About the Program</h4>
+        <p>Our Mentorship Program is designed to pair learners with experienced professionals in the tech industry. Whether you're looking for guidance on a specific technology, career advice, or help navigating the challenges of learning to code, a mentor can provide invaluable support.</p>
+        
+        <h4>How it Works (Placeholder)</h4>
+        <p>This section will detail the process of finding and connecting with a mentor. Features might include:</p>
+        <ul>
+            <li>Mentor profiles and availability.</li>
+            <li>Direct messaging or scheduling tools.</li>
+            <li>Goal setting and progress tracking with your mentor.</li>
+        </ul>
+        
+        <h4>Interested in Becoming a Mentor?</h4>
+        <p>If you're an experienced developer passionate about helping others grow, we'd love to hear from you! Please contact us at <a href="mailto:mentors@kodefun.example.com">mentors@kodefun.example.com</a> to express your interest.</p>
+
+        <h4>Looking for a Mentor?</h4>
+        <p>Details on how to sign up and request a mentor will be available here soon. Stay tuned!</p>
+        <p>For now, if you have urgent questions, please utilize our <a href="{{ url_for('forum_index') }}">Community Forum</a>.</p>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Program Status</h5>
+                <p class="card-text">Our Mentorship Program is currently under development. We are actively working on building a robust platform to connect mentors and mentees.</p>
+                <p class="card-text"><strong>Expected Launch:</strong> Coming Soon!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

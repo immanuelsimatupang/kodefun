@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Collaboration Hub - KodeFun{% endblock %}
+{% block content %}
+<h2>KodeFun Collaboration Hub</h2>
+<p class="lead">Find project partners, share ideas, and build amazing things together!</p>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <h4>About the Collaboration Hub</h4>
+        <p>The Collaboration Hub is a space for KodeFun learners to connect with peers for group projects, coding challenges, or to discuss and develop new ideas. Working with others is a fantastic way to learn, share knowledge, and build your portfolio.</p>
+        
+        <h4>How it Works (Placeholder)</h4>
+        <p>This section will detail how you can find collaborators or propose projects. Features might include:</p>
+        <ul>
+            <li>Project listings (ideas looking for collaborators).</li>
+            <li>User profiles highlighting skills and interests for collaboration.</li>
+            <li>Tools for forming teams or private group discussions.</li>
+        </ul>
+        
+        <h4>Have a Project Idea?</h4>
+        <p>If you have a project idea and are looking for team members, you'll soon be able to post it here. For now, consider sharing your idea in the <a href="{{ url_for('forum_index') }}">Community Forum</a> under "Project Show-off" or a relevant technology category.</p>
+
+        <h4>Looking to Join a Project?</h4>
+        <p>Details on how to browse and join projects will be available here soon. Stay tuned!</p>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Hub Status</h5>
+                <p class="card-text">The Collaboration Hub is currently in the planning phase. We are excited to bring these features to you to enhance your learning experience.</p>
+                <p class="card-text"><strong>Expected Launch:</strong> Coming Soon!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

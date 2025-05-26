@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Path Suggestion Survey - KodeFun{% endblock %}
+{% block content %}
+<h2>Path Suggestion Survey</h2>
+<p>Answer a couple of questions to help us suggest a learning path that might suit you!</p>
+
+<form method="POST" action="{{ url_for('path_survey') }}" class="mt-4">
+    <div class="form-group">
+        <label for="interest"><strong>1. What area are you most interested in developing for?</strong></label>
+        <div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="interest" id="interest_websites" value="websites" required>
+                <label class="form-check-label" for="interest_websites">Websites (Frontend, Backend, Full-Stack)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="interest" id="interest_mobile" value="mobile_apps">
+                <label class="form-check-label" for="interest_mobile">Mobile Apps (iOS, Android)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="interest" id="interest_data" value="data_analysis">
+                <label class="form-check-label" for="interest_data">Data Analysis & Machine Learning</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="interest" id="interest_games" value="games">
+                <label class="form-check-label" for="interest_games">Games Development</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="interest" id="interest_logic" value="programming_logic">
+                <label class="form-check-label" for="interest_logic">General Programming Logic & Fundamentals</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="learn_style"><strong>2. How do you prefer to learn?</strong></label>
+        <div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="learn_style" id="learn_style_deep_dive" value="deep_dive" required>
+                <label class="form-check-label" for="learn_style_deep_dive">Focus deeply on one programming language first.</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="learn_style" id="learn_style_stack" value="stack">
+                <label class="form-check-label" for="learn_style_stack">Learn a stack of technologies for a specific role (e.g., web development).</label>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Get Suggestion</button>
+</form>
+
+<div class="mt-4">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

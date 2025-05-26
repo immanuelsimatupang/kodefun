@@ -1,0 +1,249 @@
+/* Basic styles */
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* Forms */
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+/* Dashboard */
+.dashboard-welcome {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+/* Index page specific */
+.text-center.mt-5 h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.text-center.mt-5 .lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* JS Console Playground Styles */
+#js-playground-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#js-playground-container h4 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+#js-code-area {
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#js-run-button {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #28a745; /* Green */
+    border-color: #28a745;
+}
+#js-run-button:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+
+#js-output-area {
+    background-color: #272822; /* Monokai-like dark background */
+    color: #f8f8f2; /* Light text for dark background */
+    padding: 15px;
+    min-height: 100px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre-wrap; /* Ensure lines wrap but preserve formatting */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+
+#js-output-area div { /* Styling for individual log entries */
+    padding: 2px 0;
+    border-bottom: 1px dotted #555; /* Separator for log entries */
+}
+#js-output-area div:last-child {
+    border-bottom: none;
+}
+
+/* Variable Inspector Styles */
+#js-inspector-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f0f8ff; /* AliceBlue for a light, distinct background */
+}
+
+#js-inspector-container h4 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+#js-inspector-container p small {
+    color: #555;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+#js-inspector-code-area {
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 0.5rem;
+}
+
+#js-inspector-run-button {
+    margin-bottom: 1rem;
+    background-color: #17a2b8; /* Info blue */
+    border-color: #17a2b8;
+    color: white;
+}
+#js-inspector-run-button:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+#js-inspector-output-area, #js-inspector-variables-area {
+    background-color: #f8f9fa; /* Very light grey */
+    color: #212529; /* Default dark text */
+    padding: 10px;
+    min-height: 50px;
+    border: 1px solid #ced4da; /* Standard bootstrap border color */
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    margin-top: 0.5rem;
+}
+
+#js-inspector-variables-area div { /* Styling for individual variable entries */
+    padding: 3px 0;
+    border-bottom: 1px dashed #eee;
+}
+#js-inspector-variables-area div:last-child {
+    border-bottom: none;
+}
+#js-inspector-variables-area strong {
+    color: #0056b3; /* Darker blue for variable names */
+}
+#js-inspector-variables-area em {
+    color: #6c757d; /* Grey for type */
+    font-size: 0.9em;
+}
+
+#js-inspector-output-area div { /* Styling for log entries in inspector output */
+    padding: 2px 0;
+}

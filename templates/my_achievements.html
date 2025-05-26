@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}My Achievements - KodeFun{% endblock %}
+{% block content %}
+<h2>My Achievements</h2>
+<p>Here's a collection of all the milestones you've reached on your KodeFun journey!</p>
+
+{% if achievements %}
+    <div class="row mt-3">
+        {% for achievement in achievements %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ achievement.achievement_name }}</h5>
+                    <p class="card-text">{{ achievement.description }}</p>
+                    <p class="card-text"><small class="text-muted">Criteria: {{ achievement.criteria }}</small></p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge badge-success">+{{ achievement.xp_bonus }} XP</span>
+                    <small class="text-muted float-right">Unlocked: {{ achievement.unlocked_at.strftime('%Y-%m-%d %H:%M') if achievement.unlocked_at else 'N/A' }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info mt-3" role="alert">
+        You haven't unlocked any achievements yet. Keep learning and completing courses to earn them!
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    <a href="{{ url_for('learning_paths') }}" class="btn btn-primary">Continue Learning</a>
+</div>
+{% endblock %}

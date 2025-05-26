@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Forum - KodeFun Community{% endblock %}
+{% block content %}
+<h2>KodeFun Community Forum</h2>
+<p>Connect with other learners, ask questions, share your projects, and help each other grow!</p>
+
+<div class="list-group mt-4">
+    {% if categories %}
+        {% for category in categories %}
+            <a href="{{ url_for('forum_category_threads', category_id=category.category_id) }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ category.name }}</h5>
+                <p class="mb-1">{{ category.description }}</p>
+            </a>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No forum categories have been set up yet. Please check back later!
+        </div>
+    {% endif %}
+</div>
+<div class="mt-4">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

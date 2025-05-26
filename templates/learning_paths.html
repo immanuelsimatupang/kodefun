@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Learning Paths - KodeFun{% endblock %}
+{% block content %}
+<h2>Learning Paths</h2>
+<div class="list-group">
+    {% if paths %}
+        {% for path in paths %}
+            <a href="{{ url_for('learning_path_tracks', path_id=path.path_id) }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ path.path_name }}</h5>
+                <p class="mb-1">{{ path.path_description }}</p>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p>No learning paths available at the moment.</p>
+    {% endif %}
+</div>
+<div class="mt-3">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}
