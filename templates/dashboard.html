@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard - KodeFun{% endblock %}
+{% block content %}
+<h2>Dashboard</h2>
+{% if session.user_id %}
+    <p>Welcome, {{ session.username }}!</p>
+    <p>Your XP: {{ session.xp_points }}</p>
+    
+    <div class="mt-4">
+        <h4>Start Your Learning Journey</h4>
+        <p>Explore learning paths, or if you're not sure where to begin, try our path suggestion survey!</p>
+        <a href="{{ url_for('learning_paths') }}" class="btn btn-primary mr-2">Browse Learning Paths</a>
+        <a href="{{ url_for('path_survey') }}" class="btn btn-info">Get a Path Suggestion</a>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+{% else %}
+    <p>You are not logged in. Please <a href="{{ url_for('login') }}">login</a>.</p>
+{% endif %}
+{% endblock %}
