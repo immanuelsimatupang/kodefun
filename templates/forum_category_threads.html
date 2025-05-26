@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}{{ category.name }} - Forum - KodeFun{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('forum_index') }}">Forum Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+    </ol>
+</nav>
+
+<h2>{{ category.name }}</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p>Threads in this category. Start a new discussion or join an existing one!</p>
+    <a href="{{ url_for('forum_create_thread', category_id=category.category_id) }}" class="btn btn-success">Create New Thread</a>
+</div>
+
+{% if threads %}
+    <ul class="list-group">
+        {% for thread in threads %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5><a href="{{ url_for('forum_thread_view', thread_id=thread.thread_id) }}">{{ thread.title }}</a></h5>
+                    <small>Started by: {{ thread.username }} on {{ thread.created_at.strftime('%Y-%m-%d %H:%M') if thread.created_at else 'N/A' }}</small><br>
+                    <small>Posts: {{ thread.post_count }} | Last post: {{ thread.last_post_time.strftime('%Y-%m-%d %H:%M') if thread.last_post_time else 'N/A' }}</small>
+                </div>
+                <a href="{{ url_for('forum_thread_view', thread_id=thread.thread_id) }}" class="btn btn-outline-primary btn-sm">View Thread</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        No threads in this category yet. Be the first to start a discussion!
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{{ url_for('forum_index') }}" class="btn btn-secondary">Back to Forum Categories</a>
+</div>
+{% endblock %}

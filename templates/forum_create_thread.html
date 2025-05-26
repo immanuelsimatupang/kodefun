@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Create New Thread in {{ category.name }} - KodeFun{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('forum_index') }}">Forum Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('forum_category_threads', category_id=category.category_id) }}">{{ category.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create New Thread</li>
+    </ol>
+</nav>
+
+<h2>Create New Thread in "{{ category.name }}"</h2>
+
+<form method="POST" action="{{ url_for('forum_create_thread', category_id=category.category_id) }}" class="mt-3">
+    <div class="form-group">
+        <label for="title">Thread Title:</label>
+        <input type="text" class="form-control" id="title" name="title" required value="{{ request.form.title if request.form.title else '' }}">
+    </div>
+    <div class="form-group">
+        <label for="content">Your First Post Content:</label>
+        <textarea class="form-control" id="content" name="content" rows="8" required>{{ request.form.content if request.form.content else '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Thread</button>
+    <a href="{{ url_for('forum_category_threads', category_id=category.category_id) }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

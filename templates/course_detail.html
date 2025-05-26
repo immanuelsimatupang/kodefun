@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block title %}{{ current_course.course_name }} - KodeFun{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('learning_paths') }}">Learning Paths</a></li>
+        {% if track_info %}
+            <li class="breadcrumb-item"><a href="{{ url_for('learning_path_tracks', path_id=track_info.path_id) }}">{{ track_info.path_name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('track_courses', track_id=track_info.track_id) }}">{{ track_info.track_name }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">{{ current_course.course_name }}</li>
+    </ol>
+</nav>
+
+<h2>{{ current_course.course_name }}</h2>
+
+<div class="card mt-3">
+    <div class="card-header">
+        Course Details
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Core Concepts</h5>
+        <pre class="card-text" style="white-space: pre-wrap;">{{ current_course.core_concepts }}</pre>
+        <hr>
+        <h5 class="card-title">Interactive Elements</h5>
+        <p class="card-text">{{ current_course.interactive_elements_description }}</p>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Assessments
+    </div>
+    <div class="card-body">
+        {% if assessments %}
+            <ul class="list-group list-group-flush">
+                {% for assessment in assessments %}
+                    {% set component_score = 0 %}
+                    {% if assessment.assessment_type == 'Theory' %}
+                        {% set component_score = user_progress.current_score_theory %}
+                    {% elif assessment.assessment_type == 'Practice' %}
+                        {% set component_score = user_progress.current_score_practice %}
+                    {% elif assessment.assessment_type == 'Project' %} {# Covers 'Mini Challenge' and 'Project' #}
+                        {% set component_score = user_progress.current_score_project %}
+                    {% elif assessment.assessment_type == 'Live Coding' %}
+                        {% set component_score = user_progress.current_score_live_coding %}
+                    {% endif %}
+
+                    <li class="list-group-item">
+                        <strong>{{ assessment.description }}</strong> ({{ assessment.assessment_type }})
+                        <span class="badge badge-info float-right">{{ assessment.weight_percentage }}% weight</span>
+                        <p class="mb-1">Your Score: {{ component_score if component_score is not none else 0 }} / {{ assessment.weight_percentage }}</p>
+                        
+                        {% if (user_progress.status == 'unlocked' or user_progress.status == 'in_progress') and (component_score is none or component_score == 0) %}
+                        <form method="POST" action="{{ url_for('submit_assessment', course_id=current_course.course_id, assessment_id=assessment.assessment_id) }}" class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Mark '{{ assessment.description }}' as Complete (Mock)</button>
+                        </form>
+                        {% elif component_score > 0 %}
+                         <span class="badge badge-success">Component Submitted</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No specific assessments listed for this course.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Course Progress & Evaluation
+    </div>
+    <div class="card-body">
+        <p><strong>Overall Status:</strong> 
+            {% if user_progress.status == 'unlocked' %} <span class="badge badge-primary">Unlocked</span>
+            {% elif user_progress.status == 'in_progress' %} <span class="badge badge-info">In Progress</span>
+            {% elif user_progress.status == 'completed' %} <span class="badge badge-success">Completed!</span>
+            {% elif user_progress.status == 'failed' %} <span class="badge badge-danger">Failed</span>
+            {% else %} <span class="badge badge-secondary">{{ user_progress.status }}</span>
+            {% endif %}
+        </p>
+        <p><strong>Total Score:</strong> {{ user_progress.total_score if user_progress.total_score is not none else 0 }} / 100</p>
+        <p><strong>Attempts:</strong> {{ user_progress.attempts if user_progress.attempts is not none else 0 }} / 3</p>
+        
+        {% if user_progress.unlocked_at %}
+            <p><small>Unlocked on: {{ user_progress.unlocked_at.strftime('%Y-%m-%d %H:%M:%S UTC') if user_progress.unlocked_at else 'N/A' }}</small></p>
+        {% endif %}
+        {% if user_progress.last_attempt_at %}
+            <p><small>Last activity: {{ user_progress.last_attempt_at.strftime('%Y-%m-%d %H:%M:%S UTC') if user_progress.last_attempt_at else 'N/A' }}</small></p>
+        {% endif %}
+        {% if user_progress.completed_at %}
+            <p><small>Completed on: {{ user_progress.completed_at.strftime('%Y-%m-%d %H:%M:%S UTC') if user_progress.completed_at else 'N/A' }}</small></p>
+        {% endif %}
+
+        {% if user_progress.status == 'in_progress' and (user_progress.attempts if user_progress.attempts is not none else 0) < 3 %}
+            <form method="POST" action="{{ url_for('evaluate_course_completion', course_id=current_course.course_id) }}" class="mt-3">
+                <button type="submit" class="btn btn-success">Evaluate My Final Score</button>
+            </form>
+        {% elif user_progress.status == 'completed' %}
+            <p class="text-success font-weight-bold">Congratulations! You have successfully completed this course.</p>
+        {% elif user_progress.status == 'failed' %}
+            <p class="text-danger font-weight-bold">Unfortunately, you have reached the maximum number of attempts for this course.</p>
+        {% elif (user_progress.attempts if user_progress.attempts is not none else 0) >= 3 %}
+             <p class="text-warning font-weight-bold">Maximum attempts reached. Further evaluation is not possible.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('track_courses', track_id=current_course.track_id) }}" class="btn btn-secondary">Back to Courses in {{ track_info.track_name if track_info else 'Track' }}</a>
+</div>
+
+{% if personalized_support_links %}
+<div class="card mt-4">
+    <div class="card-header">
+        Further Learning & Support
+    </div>
+    <div class="card-body">
+        <p>Here are some resources that might be helpful as you progress with {{ current_course.course_name }}:</p>
+        <ul class="list-group list-group-flush">
+            {% for link_text in personalized_support_links %}
+                <li class="list-group-item">
+                    <a href="#TODO" class="card-link">{{ link_text }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
