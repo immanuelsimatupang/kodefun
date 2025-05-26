@@ -114,6 +114,7 @@ form {
     font-size: 1.25rem;
     margin-bottom: 2rem;
 }
+kodefun-initial-build
 
 /* JS Console Playground Styles */
 #js-playground-container {
@@ -247,3 +248,4 @@ form {
 #js-inspector-output-area div { /* Styling for log entries in inspector output */
     padding: 2px 0;
 }
+main

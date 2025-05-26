@@ -6,7 +6,9 @@ from datetime import datetime
 
 # Configuration
 DATABASE = 'kodefun.db'
+kodefun-initial-build
 # TODO: For production, use a fixed, strong SECRET_KEY set as an environment variable.
+main
 SECRET_KEY = os.urandom(24) # In a real app, use a fixed, secure key. For development, this is fine.
 
 app = Flask(__name__)
@@ -273,6 +275,7 @@ def course_detail(course_id):
         flash('This course is currently locked. Complete previous courses to unlock.', 'warning')
         return redirect(url_for('track_courses', track_id=current_course['track_id']))
 
+kodefun-initial-build
     assessments_raw = db.execute(
         'SELECT assessment_id, assessment_type, description, weight_percentage FROM Assessments WHERE course_id = ? ORDER BY assessment_id', (course_id,)
     ).fetchall()
@@ -291,6 +294,10 @@ def course_detail(course_id):
             else:
                 assessment_dict['coding_exercise_id'] = None # No exercise found for this practice assessment
         assessments.append(assessment_dict)
+    assessments = db.execute(
+        'SELECT assessment_id, assessment_type, description, weight_percentage FROM Assessments WHERE course_id = ? ORDER BY assessment_id', (course_id,)
+    ).fetchall()
+main
     
     # Track info for breadcrumbs is now part of current_course query
     track_info = { # Reconstruct track_info for template compatibility if needed, or update template
@@ -827,6 +834,7 @@ def collaboration():
 
 # --- End Placeholder Routes ---
 
+kodefun-initial-build
 # --- Quiz System Routes ---
 @app.route('/courses/<int:course_id>/assessment/<int:assessment_id>/quiz', methods=['GET'])
 def take_quiz(course_id, assessment_id):
@@ -1157,6 +1165,7 @@ def save_coding_submission():
     return redirect(url_for('course_detail', course_id=course_id))
 
 # --- End Coding Exercise Routes ---
+main
 
 # Command to initialize DB from CLI: flask init-db
 @app.cli.command('init-db') # The duplicate logout function that was here has been removed.
@@ -1171,5 +1180,7 @@ if __name__ == '__main__':
     with app.app_context(): # Need app context for init_db if it uses get_db()
       init_db()
     # For now, Python will use the first definition of logout. # This comment also refers to the removed duplicate.
+kodefun-initial-build
     # TODO: In production, debug=True should be False. Use a WSGI server like Gunicorn instead of app.run().
+main
     app.run(debug=True, host='0.0.0.0', port=5001) # Running on a different port for clarity if needed

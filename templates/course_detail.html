@@ -49,6 +49,7 @@
                     <li class="list-group-item">
                         <strong>{{ assessment.description }}</strong> ({{ assessment.assessment_type }})
                         <span class="badge badge-info float-right">{{ assessment.weight_percentage }}% weight</span>
+kodefun-initial-build
                         <p class="mb-1">Your Score for {{ assessment.description }} ({{assessment.assessment_type}}): {{ component_score if component_score is not none else 0 }} / {{ assessment.weight_percentage }}</p>
                         
                         {% if user_progress.status == 'completed' or user_progress.status == 'failed' %}
@@ -82,6 +83,15 @@
                         {# Display recorded scores consistently, regardless of interaction type #}
                         {% if component_score > 0 and (assessment.assessment_type == 'Theory' or assessment.assessment_type == 'Practice') %}
                             <span class="badge badge-success mt-2">Score Recorded</span>
+                        <p class="mb-1">Your Score: {{ component_score if component_score is not none else 0 }} / {{ assessment.weight_percentage }}</p>
+                        
+                        {% if (user_progress.status == 'unlocked' or user_progress.status == 'in_progress') and (component_score is none or component_score == 0) %}
+                        <form method="POST" action="{{ url_for('submit_assessment', course_id=current_course.course_id, assessment_id=assessment.assessment_id) }}" class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Mark '{{ assessment.description }}' as Complete (Mock)</button>
+                        </form>
+                        {% elif component_score > 0 %}
+                         <span class="badge badge-success">Component Submitted</span>
+main
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -153,6 +163,7 @@
     </div>
 </div>
 {% endif %}
+kodefun-initial-build
 
 {% if current_course.course_name == "LEVEL 1: JavaScript Fundamentals" %}
 <hr>
@@ -209,4 +220,5 @@
 #}
 {% endif %}
 
+main
 {% endblock %}

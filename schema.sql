@@ -115,6 +115,7 @@ CREATE TABLE ForumPosts (
     FOREIGN KEY (thread_id) REFERENCES ForumThreads(thread_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+kodefun-initial-build
 
 -- Quiz System Tables
 CREATE TABLE IF NOT EXISTS QuizQuestions (
@@ -197,3 +198,4 @@ CREATE TABLE IF NOT EXISTS UserCodingSubmissions (
     FOREIGN KEY (assessment_id) REFERENCES Assessments(assessment_id),
     FOREIGN KEY (course_id) REFERENCES Courses(course_id)
 );
+main

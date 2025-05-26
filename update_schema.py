@@ -42,6 +42,7 @@ CREATE TABLE ForumPosts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (thread_id) REFERENCES ForumThreads(thread_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
+kodefun-initial-build
 );""",
         "QuizQuestions": """
 CREATE TABLE IF NOT EXISTS QuizQuestions (
@@ -126,25 +127,39 @@ CREATE TABLE IF NOT EXISTS UserCodingSubmissions (
     }
 
     print("--- Checking and Applying New Schema Parts (Forum, Quiz & Coding Exercise Tables) ---")
+);"""
+    }
+
+    print("--- Checking and Applying New Schema Parts (Forum Tables) ---")
+main
     applied_count = 0
     for table_name, table_sql in new_tables_schemas.items():
         if not table_exists(cursor, table_name):
             try:
                 print(f"Creating table '{table_name}'...")
+kodefun-initial-build
                 cursor.executescript(table_sql)
+                cursor.executescript(table_sql) # Use executescript for potentially multiple statements or complex definitions
+main
                 conn.commit()
                 print(f"Table '{table_name}' created successfully.")
                 applied_count += 1
             except sqlite3.Error as e:
                 print(f"Error creating table '{table_name}': {e}")
+kodefun-initial-build
                 conn.rollback()
+                conn.rollback() # Rollback on error for this table
+main
         else:
             print(f"Table '{table_name}' already exists. Skipping.")
             
     if applied_count > 0:
         print(f"\nApplied {applied_count} new table(s) to the schema.")
     else:
+kodefun-initial-build
         print("\nNo new tables needed to be applied. Schema likely up-to-date for these specific tables.")
+        print("\nNo new forum tables needed to be applied. Schema likely up-to-date for forum features.")
+ main
 
 def main():
     if not os.path.exists(DATABASE_PATH):
