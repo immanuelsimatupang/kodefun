@@ -49,6 +49,40 @@
                     <li class="list-group-item">
                         <strong>{{ assessment.description }}</strong> ({{ assessment.assessment_type }})
                         <span class="badge badge-info float-right">{{ assessment.weight_percentage }}% weight</span>
+kodefun-initial-build
+                        <p class="mb-1">Your Score for {{ assessment.description }} ({{assessment.assessment_type}}): {{ component_score if component_score is not none else 0 }} / {{ assessment.weight_percentage }}</p>
+                        
+                        {% if user_progress.status == 'completed' or user_progress.status == 'failed' %}
+                            <span class="badge badge-secondary mt-2">Actions disabled (course {{ user_progress.status }})</span>
+                        {% else %} {# Course is 'unlocked' or 'in_progress' #}
+                            {% if assessment.assessment_type == 'Theory' %}
+                                <a href="{{ url_for('take_quiz', course_id=current_course.course_id, assessment_id=assessment.assessment_id) }}" class="btn btn-sm btn-outline-info mt-2">
+                                    Take {{ assessment.description }}
+                                </a>
+                            {% elif assessment.assessment_type == 'Practice' %}
+                                {% if assessment.coding_exercise_id %}
+                                    <a href="{{ url_for('attempt_coding_exercise', course_id=current_course.course_id, assessment_id=assessment.assessment_id, exercise_id=assessment.coding_exercise_id) }}" class="btn btn-sm btn-outline-info mt-2">
+                                        Attempt: {{ assessment.description }}
+                                    </a>
+                                {% else %}
+                                    <span class="badge badge-light mt-2">Coding Exercise (Not Configured)</span>
+                                {% endif %}
+                            {% elif assessment.assessment_type == 'Project' or assessment.assessment_type == 'Live Coding' %}
+                                {% if component_score is none or component_score == 0 %}
+                                    <form method="POST" action="{{ url_for('submit_assessment', course_id=current_course.course_id, assessment_id=assessment.assessment_id) }}" class="mt-2">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Mark '{{ assessment.description }}' as Complete (Self-Attested)</button>
+                                    </form>
+                                {% else %}
+                                     <span class="badge badge-success mt-2">Self-Attested Score Recorded</span>
+                                {% endif %}
+                            {% else %} {# Fallback for any other assessment types not yet specifically handled #}
+                                <span class="badge badge-light mt-2">Interaction for this assessment type not yet available.</span>
+                            {% endif %}
+                        {% endif %}
+
+                        {# Display recorded scores consistently, regardless of interaction type #}
+                        {% if component_score > 0 and (assessment.assessment_type == 'Theory' or assessment.assessment_type == 'Practice') %}
+                            <span class="badge badge-success mt-2">Score Recorded</span>
                         <p class="mb-1">Your Score: {{ component_score if component_score is not none else 0 }} / {{ assessment.weight_percentage }}</p>
                         
                         {% if (user_progress.status == 'unlocked' or user_progress.status == 'in_progress') and (component_score is none or component_score == 0) %}
@@ -57,6 +91,7 @@
                         </form>
                         {% elif component_score > 0 %}
                          <span class="badge badge-success">Component Submitted</span>
+main
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -128,4 +163,62 @@
     </div>
 </div>
 {% endif %}
+kodefun-initial-build
+
+{% if current_course.course_name == "LEVEL 1: JavaScript Fundamentals" %}
+<hr>
+<div id="js-playground-container" class="mt-4">
+    <h4>JS Console Playground</h4>
+    <p>Experiment with JavaScript code snippets here. Your `console.log`, `console.error`, etc., will be captured below.</p>
+    <div class="form-group">
+        <label for="js-code-area">Enter your JavaScript code:</label>
+        <textarea class="form-control" id="js-code-area" rows="10" style="font-family: monospace;"></textarea>
+    </div>
+    <button id="js-run-button" class="btn btn-primary mb-2">Run Code</button>
+    <h5>Output:</h5>
+    <pre id="js-output-area" style="background-color: #272822; color: #f8f8f2; padding: 15px; min-height: 100px; border: 1px solid #444; border-radius: 4px; overflow-x: auto;"></pre>
+</div>
+
+<script src="{{ url_for('static', filename='js/js_console_playground.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure the DOM is fully loaded before trying to initialize the playground
+        if (document.getElementById('js-playground-container')) {
+            initPlayground('js-code-area', 'js-run-button', 'js-output-area');
+        }
+        // Initialize Variable Inspector if its container is present
+        if (document.getElementById('js-inspector-container')) {
+            initInspector('js-inspector-code-area', 'js-inspector-run-button', 'js-inspector-output-area', 'js-inspector-variables-area');
+        }
+    });
+</script>
+
+<div id="js-inspector-container" class="mt-4">
+    <h4>Variable Inspector (Simplified)</h4>
+    <p><small>Supports: <code>let/var/const name = value;</code>, <code>name = value;</code> (value can be number, string, boolean, or another existing variable), and <code>console.log(nameOrString);</code>. Does not support complex expressions like <code>x + 5</code> in assignments yet.</small></p>
+    <div class="form-group">
+        <label for="js-inspector-code-area">Enter your JavaScript code (one statement per line):</label>
+        <textarea class="form-control" id="js-inspector-code-area" rows="6"></textarea>
+    </div>
+    <button id="js-inspector-run-button" class="btn btn-info mb-2">Run & Inspect Variables</button>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Execution Log / Output:</h5>
+            <pre id="js-inspector-output-area"></pre>
+        </div>
+        <div class="col-md-6">
+            <h5>Variable States (after execution):</h5>
+            <div id="js-inspector-variables-area"></div>
+        </div>
+    </div>
+</div>
+{% else %}
+{# This else should ideally not be here if the JS console is also part of the same if block,
+   or if the variable inspector is meant to be independent.
+   Assuming for now the original structure where this endif closes the JS Fundamentals block
+#}
+{% endif %}
+
+main
 {% endblock %}

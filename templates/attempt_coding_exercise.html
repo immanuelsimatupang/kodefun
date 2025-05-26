@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}Coding Exercise: {{ exercise.title }} - KodeFun{% endblock %}
+
+{% block content %}
+<h2>Coding Exercise: {{ exercise.title }}</h2>
+<p class="lead">Assessment: {{ assessment.description }} ({{ assessment.assessment_type }})</p>
+<hr>
+
+<div class="row">
+    <div class="col-md-7">
+        <h4>Description</h4>
+        <p>{{ exercise.description | safe }}</p>
+        
+        <div class="form-group">
+            <label for="user-code-area">Your Code (JavaScript - function {{ exercise.function_name }}):</label>
+            <textarea id="user-code-area" class="form-control" rows="15" style="font-family: monospace;"></textarea>
+        </div>
+        
+        <button id="run-tests-button" class="btn btn-info mr-2">Run Tests</button>
+        
+        <form id="submission-form" method="POST" action="{{ url_for('save_coding_submission') }}" style="display: inline;">
+            <input type="hidden" name="exercise_id" value="{{ exercise.exercise_id }}">
+            <input type="hidden" name="assessment_id" value="{{ assessment.assessment_id }}">
+            <input type="hidden" name="course_id" value="{{ course_id }}">
+            <input type="hidden" name="submitted_code" id="submitted_code_hidden"> {# Will be populated by JS #}
+            <input type="hidden" name="passed_tests" id="passed_tests_hidden" value="0">
+            <input type="hidden" name="total_tests" id="total_tests_hidden" value="{{ test_cases | length }}">
+            <input type="hidden" name="results_details" id="results_details_hidden" value="">
+            
+            <button type="submit" id="submit-solution-button" class="btn btn-success" disabled>Submit Final Solution</button>
+        </form>
+    </div>
+
+    <div class="col-md-5">
+        <h4>Test Results</h4>
+        <div id="test-results-area" style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; min-height: 200px; border: 1px solid #dee2e6;">
+            <p>Run your code to see test results here.</p>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('course_detail', course_id=course_id) }}" class="btn btn-secondary">Back to Course Details</a>
+</div>
+
+{# Raw data for JS, properly escaped #}
+<script type="application/json" id="exerciseDataJson">
+    {{ exercise_data_json | safe }}
+</script>
+<script type="application/json" id="testCasesJson">
+    {{ test_cases_json | safe }}
+</script>
+
+<script src="{{ url_for('static', filename='js/coding_exercise.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exerciseDataJson = document.getElementById('exerciseDataJson').textContent;
+        const testCasesJson = document.getElementById('testCasesJson').textContent;
+        
+        initCodingExercise(
+            exerciseDataJson,
+            testCasesJson,
+            'user-code-area',
+            'run-tests-button',
+            'test-results-area',
+            'submission-form' // Pass the form ID
+        );
+
+        // Populate hidden submitted_code field before actual form submission
+        const form = document.getElementById('submission-form');
+        const codeArea = document.getElementById('user-code-area');
+        if (form && codeArea) {
+            form.addEventListener('submit', function() {
+                document.getElementById('submitted_code_hidden').value = codeArea.value;
+            });
+        }
+    });
+</script>
+{% endblock %}
